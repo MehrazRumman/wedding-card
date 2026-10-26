@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Nafiza &amp; Rumman · Wedding Reception</title>
+  <meta name="description" content="You are cordially invited to the Wedding Reception of Nafiza Dalowar Lamia &amp; Mehraz Hossain Rumman · 01 January 2027">
+  <meta name="theme-color" content="#3a0617">
+  <meta property="og:title" content="Nafiza &amp; Rumman · Wedding Reception">
+  <meta property="og:description" content="Friday, 01 January 2027 · 7:00 pm · Sadek Hossain Khoka Community Center, Motijheel, Dhaka">
+  <meta property="og:image" content="https://mehrazrumman.github.io/wedding-card/images/preview.jpg">
+  <meta property="og:type" content="website">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+  <link rel="preload" as="image" href="images/inside.jpg">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="petals" aria-hidden="true"></div>
+
+  <header class="intro">
+    <p class="greeting" id="greeting">You're invited</p>
+    <p class="hint" id="hint">Tap the seal to open</p>
+  </header>
+
+  <main class="stage">
+    <div class="card" id="card">
+      <img class="inside" src="images/inside.jpg" alt="Wedding invitation of Nafiza Dalowar Lamia and Mehraz Hossain Rumman, Friday 01 January 2027 at 7:00 pm, Sadek Hossain Khoka Community Center, Motijheel, Dhaka">
+      <div class="cover" id="cover">
+        <div class="face front">
+          <img src="images/cover.jpg" alt="Card cover with N &amp; R monogram, 01 January 2027, tied with gold string and a rose wax seal">
+        </div>
+        <div class="face back"></div>
+      </div>
+      <button class="seal" id="seal" aria-label="Open the invitation"></button>
+    </div>
+  </main>
+
+  <section class="details" id="details" hidden>
+    <h1 class="names">Nafiza <span>&amp;</span> Rumman</h1>
+    <p class="date">Friday · 01 January 2027 · 7:00 pm</p>
+
+    <div class="countdown" id="countdown">
+      <div><b id="cd-days">0</b><small>Days</small></div>
+      <div><b id="cd-hours">0</b><small>Hours</small></div>
+      <div><b id="cd-mins">0</b><small>Minutes</small></div>
+      <div><b id="cd-secs">0</b><small>Seconds</small></div>
+    </div>
+
+    <div class="venue">
+      <h2>Venue</h2>
+      <p>Sadek Hossain Khoka Community Center<br>Motijheel, Dhaka</p>
+    </div>
+
+    <div class="actions">
+      <a class="btn" target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&query=Sadek+Hossain+Khoka+Community+Center+Motijheel+Dhaka">Get Directions</a>
+      <a class="btn" target="_blank" rel="noopener" href="https://calendar.google.com/calendar/render?action=TEMPLATE&text=Wedding+Reception+of+Nafiza+%26+Rumman&dates=20270101T130000Z/20270101T170000Z&location=Sadek+Hossain+Khoka+Community+Center,+Motijheel,+Dhaka&details=In+Shaa+Allah,+we+request+the+pleasure+of+your+gracious+presence+and+blessings.">Add to Calendar</a>
+    </div>
+
+    <div class="contact">
+      <h2>If needed</h2>
+      <a href="tel:+8801304347090">01304347090</a>
+      <a href="tel:+8801706638833">01706638833</a>
+    </div>
+
+    <p class="hosts">Reception by Olyvia, Fatema &amp; Muntasir</p>
+
+    <button class="link" id="close">Close the card</button>
+  </section>
+
+  <script src="script.js"></script>
+</body>
+</html>
