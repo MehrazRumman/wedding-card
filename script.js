@@ -5,7 +5,8 @@
   const details = document.getElementById("details");
   const closeBtn = document.getElementById("close");
   const inside = document.querySelector(".inside");
-  const petals = document.querySelector(".petals");
+  const card = document.getElementById("card");
+  const canvas = document.getElementById("fireworks");
   const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
   // Personalised greeting: share the link as ...?to=Guest%20Name
@@ -16,9 +17,10 @@
 
   function open() {
     if (body.classList.contains("opened")) return;
+    fitOpenCard();
     body.classList.add("opened");
     if (navigator.vibrate) navigator.vibrate(30);
-    showPetals();
+    showFireworks();
     setTimeout(function () {
       details.hidden = false;
       setTimeout(function () {
@@ -44,8 +46,12 @@
     if (!body.classList.contains("opened")) return;
     const zoom = document.createElement("div");
     zoom.className = "zoom";
-    zoom.innerHTML = '<img src="images/inside.jpg" alt="">';
-    zoom.querySelector("img").alt = inside.alt;
+    const copy = inside.cloneNode(true);
+    copy.removeAttribute("id");
+    copy.removeAttribute("aria-labelledby");
+    copy.setAttribute("aria-label", inside.querySelector("title").textContent);
+    copy.querySelector("title").removeAttribute("id");
+    zoom.appendChild(copy);
     zoom.addEventListener("click", function () { zoom.remove(); });
     document.body.appendChild(zoom);
   });
@@ -53,20 +59,98 @@
     if (e.key === "Escape") document.querySelectorAll(".zoom").forEach(function (z) { z.remove(); });
   });
 
-  function showPetals() {
+  // Opened, the flap and right panel stick out on both sides (about 2.12x the
+  // card's width), so shrink the card on narrow screens to keep everything in view
+  function fitOpenCard() {
+    const scale = Math.min(1, (window.innerWidth - 24) / (card.offsetWidth * 2.12));
+    card.style.setProperty("--open-scale", scale.toFixed(3));
+  }
+  window.addEventListener("resize", fitOpenCard);
+
+  function showFireworks() {
     if (reduceMotion) return;
-    for (let i = 0; i < 40; i++) {
-      const p = document.createElement("i");
-      const duration = 5 + Math.random() * 5;
-      p.style.left = Math.random() * 100 + "vw";
-      p.style.animationDuration = duration + "s";
-      p.style.animationDelay = Math.random() * 2.5 + "s";
-      p.style.setProperty("--drift", (Math.random() * 30 - 15) + "vw");
-      p.style.setProperty("--spin", (Math.random() * 720 - 360) + "deg");
-      p.style.transform = "scale(" + (0.6 + Math.random() * 0.8) + ")";
-      petals.appendChild(p);
-      setTimeout(function () { p.remove(); }, (duration + 3) * 1000);
+    const ctx = canvas.getContext("2d");
+    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+    const w = window.innerWidth;
+    const h = window.innerHeight;
+    canvas.width = w * dpr;
+    canvas.height = h * dpr;
+    ctx.scale(dpr, dpr);
+
+    const colors = ["#f3dcaa", "#e6c58a", "#fff3dc", "#ff8fb1", "#ff4d79", "#ffd36e"];
+    const rockets = [];
+    const sparks = [];
+    const start = performance.now();
+    let launched = 0;
+    const total = 14;
+
+    function launch() {
+      rockets.push({
+        x: w * (0.15 + Math.random() * 0.7),
+        y: h,
+        vy: -(h * 0.012 + Math.random() * h * 0.004),
+        peak: h * (0.12 + Math.random() * 0.3),
+        color: colors[Math.floor(Math.random() * colors.length)]
+      });
+      launched++;
     }
+
+    function burst(r) {
+      const count = 70 + Math.floor(Math.random() * 40);
+      const speed = 2.2 + Math.random() * 2;
+      for (let i = 0; i < count; i++) {
+        const a = (Math.PI * 2 * i) / count;
+        const v = speed * (0.6 + Math.random() * 0.4);
+        sparks.push({
+          x: r.x, y: r.y,
+          vx: Math.cos(a) * v, vy: Math.sin(a) * v,
+          life: 1, decay: 0.010 + Math.random() * 0.012,
+          color: Math.random() < 0.25 ? "#fff3dc" : r.color
+        });
+      }
+    }
+
+    function frame(now) {
+      const t = now - start;
+      if (launched < total && t > launched * 280) launch();
+
+      ctx.globalCompositeOperation = "destination-out";
+      ctx.fillStyle = "rgba(0, 0, 0, .22)";
+      ctx.fillRect(0, 0, w, h);
+      ctx.globalCompositeOperation = "lighter";
+
+      for (let i = rockets.length - 1; i >= 0; i--) {
+        const r = rockets[i];
+        r.y += r.vy;
+        r.vy *= 0.985;
+        ctx.fillStyle = r.color;
+        ctx.fillRect(r.x - 1, r.y, 2, 6);
+        if (r.y <= r.peak || r.vy > -1.5) { burst(r); rockets.splice(i, 1); }
+      }
+
+      for (let i = sparks.length - 1; i >= 0; i--) {
+        const p = sparks[i];
+        p.vx *= 0.98;
+        p.vy = p.vy * 0.98 + 0.045;
+        p.x += p.vx;
+        p.y += p.vy;
+        p.life -= p.decay;
+        if (p.life <= 0) { sparks.splice(i, 1); continue; }
+        ctx.globalAlpha = p.life;
+        ctx.fillStyle = p.color;
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, 1.8, 0, Math.PI * 2);
+        ctx.fill();
+      }
+      ctx.globalAlpha = 1;
+
+      if (launched < total || rockets.length || sparks.length) {
+        requestAnimationFrame(frame);
+      } else {
+        ctx.clearRect(0, 0, w, h);
+      }
+    }
+    requestAnimationFrame(frame);
   }
 
   // Countdown to Friday 01 January 2027, 7:00 pm Dhaka time (UTC+6)

@@ -70,9 +70,36 @@ body.opened .hint { opacity: 0; animation: none; }
 .inside {
   position: absolute;
   inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  border-radius: 6px;
   box-shadow: 0 25px 60px rgba(0, 0, 0, .55);
   cursor: zoom-in;
 }
+
+/* ---------- vector invitation ---------- */
+.inside text { fill: url(#gold); text-anchor: middle; }
+.inside .body { font-family: "Cormorant Garamond", Georgia, serif; font-style: italic; font-weight: 600; }
+.inside .name,
+.inside .venue { font-family: "Great Vibes", cursive; }
+.inside .day { font-family: "Cormorant Garamond", Georgia, serif; font-style: italic; }
+.inside .bismillah { font-family: "Amiri", serif; direction: rtl; }
+.inside .rule { stroke: url(#gold); stroke-width: 3; fill: none; }
+
+/* Gold frame lines draw themselves, then the lattice and each line of text appear */
+.inside .draw { stroke-dasharray: 1; stroke-dashoffset: 1; }
+.inside .lattice,
+.inside .line { opacity: 0; }
+.inside .line { transform: translateY(14px); transform-box: fill-box; }
+body.opened .inside .draw { animation: draw 2.4s ease-in-out .7s forwards; }
+body.opened .inside .lattice { animation: fade 1.4s ease 2.2s backwards; opacity: 1; }
+body.opened .inside .line {
+  animation: line-in .9s ease calc(1.3s + var(--i) * .13s) forwards;
+}
+.zoom .inside .draw { stroke-dashoffset: 0; animation: none; }
+.zoom .inside .lattice,
+.zoom .inside .line { opacity: 1; transform: none; animation: none; }
 
 /* ---------- half jacket ---------- */
 .jacket {
@@ -83,37 +110,21 @@ body.opened .hint { opacity: 0; animation: none; }
 }
 body.opened .jacket { pointer-events: none; }
 
-/* Right band of the jacket (gold strings over the back panel): slides off first */
-.sleeve {
-  position: absolute;
-  inset: 0;
-  clip-path: polygon(45.8% 0%, 48.5% 5.6%, 51% 11.9%, 52.9% 18.3%, 54.9% 24.6%, 56% 31%, 56.8% 37.3%, 57.3% 43.7%, 57.5% 50%, 57.3% 56.3%, 56.8% 62.7%, 55.8% 69%, 54.4% 75.4%, 52.9% 81.7%, 51% 88.1%, 48.5% 94.4%, 45.8% 100%, 100% 100%, 100% 0%);
-  transition: transform .9s cubic-bezier(.5, 0, .3, 1) 1.3s, opacity .9s ease 1.3s;
-}
-body.opened .sleeve {
-  transform: translateX(14%);
-  opacity: 0;
-  transition-delay: 0s;
-}
-
-/* Curved front flap, hinged on the left edge */
+/* Both sides open like gates: flap to the left, right panel to the right */
+.sleeve,
 .flap {
   position: absolute;
   inset: 0;
-  transform-origin: left center;
   transform-style: preserve-3d;
-  transition: transform 1.7s cubic-bezier(.6, .05, .25, 1), opacity .5s ease;
+  transition: transform 1.8s cubic-bezier(.6, .05, .25, 1);
 }
-body.opened .flap {
-  transform: rotateY(-170deg);
-  opacity: 0;
-  transition: transform 1.7s cubic-bezier(.6, .05, .25, 1) .45s, opacity .6s ease 1.9s;
-}
-/* Wide screens: slide over and keep the flap open beside the invitation */
-@media (min-width: 1100px) {
-  body.opened .card { transform: translateX(29%); }
-  body.opened .flap { transform: rotateY(-178deg); opacity: 1; }
-}
+.flap { transform-origin: left center; z-index: 2; }
+.sleeve { transform-origin: right center; }
+body.opened .flap { transform: rotateY(-178deg); }
+body.opened .sleeve { transform: rotateY(178deg); transition-delay: .25s; }
+
+/* Keep both opened sides in view; --open-scale is set from script.js */
+body.opened .card { transform: translateX(1.9%) scale(var(--open-scale, 1)); }
 
 .face {
   position: absolute;
@@ -122,15 +133,27 @@ body.opened .flap {
   -webkit-backface-visibility: hidden;
 }
 .front { filter: drop-shadow(5px 0 6px rgba(0, 0, 0, .35)); }
-.front img {
+.flap .front img {
   clip-path: polygon(0% 0%, 46.2% 0%, 48.9% 5.6%, 51.4% 11.9%, 53.3% 18.3%, 55.3% 24.6%, 56.4% 31%, 57.2% 37.3%, 57.7% 43.7%, 57.9% 50%, 57.7% 56.3%, 57.2% 62.7%, 56.2% 69%, 54.8% 75.4%, 53.3% 81.7%, 51.4% 88.1%, 48.9% 94.4%, 46.2% 100%, 0% 100%);
 }
-.back {
-  transform: rotateY(180deg);
+.back { transform: rotateY(180deg); }
+.flap .back {
   clip-path: polygon(100% 0%, 53.8% 0%, 51.1% 5.6%, 48.6% 11.9%, 46.7% 18.3%, 44.7% 24.6%, 43.6% 31%, 42.8% 37.3%, 42.3% 43.7%, 42.1% 50%, 42.3% 56.3%, 42.8% 62.7%, 43.8% 69%, 45.2% 75.4%, 46.7% 81.7%, 48.6% 88.1%, 51.1% 94.4%, 53.8% 100%, 100% 100%);
   background:
     linear-gradient(270deg, rgba(0,0,0,.3), transparent 25%),
     radial-gradient(circle at 70% 45%, #b01c50, var(--wine) 75%);
+}
+
+.sleeve .front img {
+  clip-path: polygon(45.8% 0%, 48.5% 5.6%, 51% 11.9%, 52.9% 18.3%, 54.9% 24.6%, 56% 31%, 56.8% 37.3%, 57.3% 43.7%, 57.5% 50%, 57.3% 56.3%, 56.8% 62.7%, 55.8% 69%, 54.4% 75.4%, 52.9% 81.7%, 51% 88.1%, 48.5% 94.4%, 45.8% 100%, 100% 100%, 100% 0%);
+}
+.sleeve .front { filter: none; }
+/* Mirror of the flap, so the opened right side curves outward like the left */
+.sleeve .back {
+  clip-path: polygon(0% 0%, 46.2% 0%, 48.9% 5.6%, 51.4% 11.9%, 53.3% 18.3%, 55.3% 24.6%, 56.4% 31%, 57.2% 37.3%, 57.7% 43.7%, 57.9% 50%, 57.7% 56.3%, 57.2% 62.7%, 56.2% 69%, 54.8% 75.4%, 53.3% 81.7%, 51.4% 88.1%, 48.9% 94.4%, 46.2% 100%, 0% 100%);
+  background:
+    linear-gradient(90deg, rgba(0,0,0,.3), transparent 25%),
+    radial-gradient(circle at 30% 45%, #b01c50, var(--wine) 75%);
 }
 
 /* ---------- wax seal hotspot ---------- */
@@ -280,6 +303,14 @@ h2 {
   cursor: zoom-out;
   animation: fade .3s ease;
 }
+.zoom .inside {
+  position: static;
+  width: auto;
+  height: 100%;
+  max-width: 100%;
+  aspect-ratio: 1026 / 1576;
+  cursor: zoom-out;
+}
 .zoom img {
   max-width: 100%;
   max-height: 100%;
@@ -287,23 +318,14 @@ h2 {
   box-shadow: 0 20px 60px rgba(0, 0, 0, .6);
 }
 
-/* ---------- falling petals ---------- */
-.petals {
+/* ---------- fireworks ---------- */
+.fireworks {
   position: fixed;
   inset: 0;
+  width: 100%;
+  height: 100%;
   pointer-events: none;
-  overflow: hidden;
   z-index: 10;
-}
-.petals i {
-  position: absolute;
-  top: -5vh;
-  width: 12px;
-  height: 10px;
-  border-radius: 80% 0 80% 0;
-  background: linear-gradient(135deg, #fff3dc, #e6c58a);
-  opacity: .85;
-  animation: fall linear forwards;
 }
 
 /* ---------- animations ---------- */
@@ -320,11 +342,17 @@ h2 {
 @keyframes fade {
   from { opacity: 0; }
 }
-@keyframes fall {
-  to { transform: translate(var(--drift), 110vh) rotate(var(--spin)); }
+@keyframes draw {
+  to { stroke-dashoffset: 0; }
+}
+@keyframes line-in {
+  to { opacity: 1; transform: none; }
 }
 
 @media (prefers-reduced-motion: reduce) {
   .sleeve, .flap, .card { transition-duration: .01s !important; transition-delay: 0s !important; }
   .seal::before, .seal::after, .hint { animation: none; }
+  body.opened .inside .draw { animation: none; stroke-dashoffset: 0; }
+  body.opened .inside .lattice,
+  body.opened .inside .line { animation: none; opacity: 1; transform: none; }
 }

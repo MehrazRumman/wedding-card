@@ -12,12 +12,11 @@
   <meta property="og:type" content="website">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
-  <link rel="preload" as="image" href="images/inside.jpg">
+  <link href="https://fonts.googleapis.com/css2?family=Amiri&family=Great+Vibes&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <div class="petals" aria-hidden="true"></div>
+  <canvas class="fireworks" id="fireworks" aria-hidden="true"></canvas>
 
   <header class="intro">
     <p class="greeting" id="greeting">You're invited</p>
@@ -26,9 +25,61 @@
 
   <main class="stage">
     <div class="card" id="card">
-      <img class="inside" src="images/inside.jpg" alt="Wedding invitation of Nafiza Dalowar Lamia and Mehraz Hossain Rumman, Friday 01 January 2027 at 7:00 pm, Sadek Hossain Khoka Community Center, Motijheel, Dhaka">
+      <svg class="inside" id="invite" viewBox="0 0 1026 1576" role="img" aria-labelledby="invite-title">
+        <title id="invite-title">Wedding invitation of Nafiza Dalowar Lamia and Mehraz Hossain Rumman, Friday 01 January 2027 at 7:00 pm, Sadek Hossain Khoka Community Center, Motijheel, Dhaka</title>
+        <defs>
+          <linearGradient id="gold" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0" stop-color="#f8e6bb"/><stop offset=".5" stop-color="#d9b06a"/><stop offset="1" stop-color="#f3dcaa"/>
+          </linearGradient>
+          <radialGradient id="paper" cx=".5" cy=".42" r=".75">
+            <stop offset="0" stop-color="#8c1037"/><stop offset=".7" stop-color="#6a0a29"/><stop offset="1" stop-color="#4c061c"/>
+          </radialGradient>
+          <pattern id="lattice" width="38.11" height="66" patternUnits="userSpaceOnUse">
+            <path d="M0.0 -22.0 L19.1 -11.0 L19.1 11.0 L0.0 22.0 L-19.1 11.0 L-19.1 -11.0 Z M0.0 0.0 L19.1 -11.0 M0.0 0.0 L0.0 22.0 M0.0 0.0 L-19.1 -11.0 M38.1 -22.0 L57.2 -11.0 L57.2 11.0 L38.1 22.0 L19.1 11.0 L19.1 -11.0 Z M38.1 0.0 L57.2 -11.0 M38.1 0.0 L38.1 22.0 M38.1 0.0 L19.1 -11.0 M19.1 11.0 L38.1 22.0 L38.1 44.0 L19.1 55.0 L-0.0 44.0 L0.0 22.0 Z M19.1 33.0 L38.1 22.0 M19.1 33.0 L19.1 55.0 M19.1 33.0 L0.0 22.0 M0.0 44.0 L19.1 55.0 L19.1 77.0 L0.0 88.0 L-19.1 77.0 L-19.1 55.0 Z M0.0 66.0 L19.1 55.0 M0.0 66.0 L0.0 88.0 M0.0 66.0 L-19.1 55.0 M38.1 44.0 L57.2 55.0 L57.2 77.0 L38.1 88.0 L19.1 77.0 L19.1 55.0 Z M38.1 66.0 L57.2 55.0 M38.1 66.0 L38.1 88.0 M38.1 66.0 L19.1 55.0" fill="none" stroke="url(#gold)" stroke-width="3.2"/>
+          </pattern>
+          <clipPath id="lattice-area">
+            <path clip-rule="evenodd" d="M40 40 H986 V760 H40 Z M58 1520 L58 760 L84 760 L84 680 L112 680 L112.0 600.0 A67.3 67.3 0 0 1 124.6 492.2 A61.3 61.3 0 0 1 159.5 399.7 A58.2 58.2 0 0 1 212.2 322.1 A56.7 56.7 0 0 1 278.3 258.9 A55.8 55.8 0 0 1 353.5 209.5 A54.2 54.2 0 0 1 433.2 173.4 A51.6 51.6 0 0 1 513.0 150.0 A51.6 51.6 0 0 1 592.8 173.4 A54.2 54.2 0 0 1 672.5 209.5 A55.8 55.8 0 0 1 747.7 258.9 A56.7 56.7 0 0 1 813.8 322.1 A58.2 58.2 0 0 1 866.5 399.7 A61.3 61.3 0 0 1 901.4 492.2 A67.3 67.3 0 0 1 914.0 600.0 L914 680 L942 680 L942 760 L968 760 L968 1520 Z"/>
+          </clipPath>
+        </defs>
+        <rect width="1026" height="1576" fill="url(#paper)"/>
+        <rect class="lattice" x="40" y="40" width="946" height="720" fill="url(#lattice)" clip-path="url(#lattice-area)"/>
+        <rect class="draw" pathLength="1" x="24" y="24" width="978" height="1528" fill="none" stroke="url(#gold)" stroke-width="3"/>
+        <rect class="draw" pathLength="1" x="40" y="40" width="946" height="1496" fill="none" stroke="url(#gold)" stroke-width="5"/>
+        <path class="draw" pathLength="1" d="M58 1520 L58 760 L84 760 L84 680 L112 680 L112.0 600.0 A67.3 67.3 0 0 1 124.6 492.2 A61.3 61.3 0 0 1 159.5 399.7 A58.2 58.2 0 0 1 212.2 322.1 A56.7 56.7 0 0 1 278.3 258.9 A55.8 55.8 0 0 1 353.5 209.5 A54.2 54.2 0 0 1 433.2 173.4 A51.6 51.6 0 0 1 513.0 150.0 A51.6 51.6 0 0 1 592.8 173.4 A54.2 54.2 0 0 1 672.5 209.5 A55.8 55.8 0 0 1 747.7 258.9 A56.7 56.7 0 0 1 813.8 322.1 A58.2 58.2 0 0 1 866.5 399.7 A61.3 61.3 0 0 1 901.4 492.2 A67.3 67.3 0 0 1 914.0 600.0 L914 680 L942 680 L942 760 L968 760 L968 1520 Z" fill="none" stroke="url(#gold)" stroke-width="14" stroke-linejoin="round"/>
+        <path class="draw" pathLength="1" d="M58 1520 L58 760 L84 760 L84 680 L112 680 L112.0 600.0 A67.3 67.3 0 0 1 124.6 492.2 A61.3 61.3 0 0 1 159.5 399.7 A58.2 58.2 0 0 1 212.2 322.1 A56.7 56.7 0 0 1 278.3 258.9 A55.8 55.8 0 0 1 353.5 209.5 A54.2 54.2 0 0 1 433.2 173.4 A51.6 51.6 0 0 1 513.0 150.0 A51.6 51.6 0 0 1 592.8 173.4 A54.2 54.2 0 0 1 672.5 209.5 A55.8 55.8 0 0 1 747.7 258.9 A56.7 56.7 0 0 1 813.8 322.1 A58.2 58.2 0 0 1 866.5 399.7 A61.3 61.3 0 0 1 901.4 492.2 A67.3 67.3 0 0 1 914.0 600.0 L914 680 L942 680 L942 760 L968 760 L968 1520 Z" fill="none" stroke="#6e0b2c" stroke-width="7" stroke-linejoin="round"/>
+        <g class="words">
+          <text class="line bismillah" x="513" y="238" font-size="38" style="--i:0">بِسْمِ ٱللَّٰهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ</text>
+          <text class="line body" x="513" y="300" font-size="30" style="--i:1">“In the name of Almighty Allah,</text>
+          <text class="line body" x="513" y="340" font-size="30" style="--i:2">the most Beneficent &amp; the most Merciful”</text>
+          <text class="line body" x="513" y="396" font-size="32" style="--i:3">Assalamu Alaikum</text>
+          <text class="line body" x="513" y="446" font-size="30" style="--i:4">cordially request the pleasure of your gracious presence</text>
+          <text class="line body" x="513" y="490" font-size="30" style="--i:5">and blessings at the Wedding Reception of</text>
+          <text class="line name" x="513" y="572" font-size="66" style="--i:6">Nafiza Dalowar Lamia</text>
+          <text class="line body" x="513" y="628" font-size="28" style="--i:7">eldest daughter of</text>
+          <text class="line body" x="513" y="668" font-size="30" style="--i:8">S.M. Dalowar &amp; Rozina Dalowar</text>
+          <text class="line body" x="513" y="712" font-size="28" style="--i:9">with</text>
+          <text class="line name" x="513" y="790" font-size="66" style="--i:10">Mehraz Hossain Rumman</text>
+          <text class="line body" x="513" y="846" font-size="28" style="--i:11">elder son of</text>
+          <text class="line body" x="513" y="888" font-size="30" style="--i:12">Late Md. Belal Hossain &amp; Nazmun Nahar</text>
+          <text class="line body" x="513" y="954" font-size="32" style="--i:13">In Shaa Allah</text>
+          <text class="line body" x="513" y="994" font-size="30" style="--i:14">On</text>
+          <text class="line body" x="513" y="1035" font-size="34" style="--i:15">January</text>
+          <g class="line" style="--i:16"><path class="rule" d="M250 1062 H452 M250 1123 H452 M574 1062 H776 M574 1123 H776"/><text class="body" x="351" y="1103" font-size="34">Friday</text><text class="day" x="513" y="1114" font-size="88">01</text><text class="body" x="675" y="1103" font-size="34">at 7.00 pm</text></g>
+          <text class="line body" x="513" y="1165" font-size="34" style="--i:17">2027</text>
+          <text class="line body" x="513" y="1215" font-size="30" style="--i:18">Venue:</text>
+          <text class="line venue" x="513" y="1260" font-size="38" style="--i:19">Sadek Hossain Khoka Community Center</text>
+          <text class="line body" x="513" y="1298" font-size="28" style="--i:20">Motijheel, Dhaka.</text>
+          <text class="line body" x="513" y="1345" font-size="30" style="--i:21">Reception by:</text>
+          <text class="line body" x="513" y="1382" font-size="30" style="--i:22">Olyvia, Fatema &amp; Muntasir</text>
+          <text class="line body" x="513" y="1429" font-size="30" style="--i:23">If needed:</text>
+          <text class="line body" x="513" y="1469" font-size="28" style="--i:24" letter-spacing="1">01304347090 | 01706638833</text>
+        </g>
+      </svg>
       <div class="jacket" id="cover">
-        <img class="sleeve" src="images/cover.jpg" alt="">
+        <div class="sleeve">
+          <div class="face front"><img src="images/cover.jpg" alt=""></div>
+          <div class="face back"></div>
+        </div>
         <div class="flap">
           <div class="face front">
             <img src="images/cover.jpg" alt="Half jacket cover with N &amp; R monogram, 01 January 2027, tied with gold string and a rose wax seal">
