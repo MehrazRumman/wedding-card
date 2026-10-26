@@ -21,12 +21,14 @@
     body.classList.add("opened");
     if (navigator.vibrate) navigator.vibrate(30);
     showFireworks();
+    // Show the details once the card is open, but stay on the card for 5 seconds
     setTimeout(function () {
       details.hidden = false;
-      setTimeout(function () {
-        details.scrollIntoView({ behavior: reduceMotion ? "auto" : "smooth", block: "start" });
-      }, 1400);
     }, reduceMotion ? 0 : 1900);
+    setTimeout(function () {
+      if (!body.classList.contains("opened")) return;
+      details.scrollIntoView({ behavior: reduceMotion ? "auto" : "smooth", block: "start" });
+    }, reduceMotion ? 5000 : 7000);
   }
 
   function close() {
@@ -60,10 +62,10 @@
   });
 
   // Opened, the flap and right panel stick out on both sides (about 2.12x the
-  // card's width), so shrink the card on narrow screens to keep everything in view
+  // card's width). Where that doesn't fit, they fade away after swinging open
+  // so the invitation keeps its full size.
   function fitOpenCard() {
-    const scale = Math.min(1, (window.innerWidth - 24) / (card.offsetWidth * 2.12));
-    card.style.setProperty("--open-scale", scale.toFixed(3));
+    body.classList.toggle("compact", window.innerWidth - 24 < card.offsetWidth * 2.12);
   }
   window.addEventListener("resize", fitOpenCard);
 

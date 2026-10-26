@@ -123,8 +123,13 @@ body.opened .jacket { pointer-events: none; }
 body.opened .flap { transform: rotateY(-178deg); }
 body.opened .sleeve { transform: rotateY(178deg); transition-delay: .25s; }
 
-/* Keep both opened sides in view; --open-scale is set from script.js */
-body.opened .card { transform: translateX(1.9%) scale(var(--open-scale, 1)); }
+/* Wide screens keep both opened sides in view */
+body.opened:not(.compact) .card { transform: translateX(1.9%); }
+/* Narrow screens (.compact, set from script.js): fade the sides once they've swung open */
+body.compact.opened .flap,
+body.compact.opened .sleeve { opacity: 0; }
+body.compact.opened .flap { transition: transform 1.8s cubic-bezier(.6, .05, .25, 1), opacity .5s ease 1.7s; }
+body.compact.opened .sleeve { transition: transform 1.8s cubic-bezier(.6, .05, .25, 1) .25s, opacity .5s ease 1.95s; }
 
 .face {
   position: absolute;
