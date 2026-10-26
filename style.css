@@ -3,7 +3,7 @@
   --deep: #3a0617;
   --gold: #e6c58a;
   --gold-soft: rgba(230, 197, 138, .55);
-  --ratio: 1041 / 1600;
+  --ratio: 1026 / 1576;
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -51,7 +51,7 @@ body.opened .hint { opacity: 0; animation: none; }
 
 .card {
   position: relative;
-  width: min(92vw, calc(78dvh * 1041 / 1600), 520px);
+  width: min(92vw, calc(78dvh * 1026 / 1576), 520px);
   aspect-ratio: var(--ratio);
   transition: transform 1.2s cubic-bezier(.6, .05, .25, 1);
   transform-style: preserve-3d;
@@ -74,23 +74,45 @@ body.opened .hint { opacity: 0; animation: none; }
   cursor: zoom-in;
 }
 
-.cover {
+/* ---------- half jacket ---------- */
+.jacket {
+  position: absolute;
+  inset: 0;
+  transform-style: preserve-3d;
+  z-index: 2;
+}
+body.opened .jacket { pointer-events: none; }
+
+/* Right band of the jacket (gold strings over the back panel): slides off first */
+.sleeve {
+  position: absolute;
+  inset: 0;
+  clip-path: polygon(45.8% 0%, 48.5% 5.6%, 51% 11.9%, 52.9% 18.3%, 54.9% 24.6%, 56% 31%, 56.8% 37.3%, 57.3% 43.7%, 57.5% 50%, 57.3% 56.3%, 56.8% 62.7%, 55.8% 69%, 54.4% 75.4%, 52.9% 81.7%, 51% 88.1%, 48.5% 94.4%, 45.8% 100%, 100% 100%, 100% 0%);
+  transition: transform .9s cubic-bezier(.5, 0, .3, 1) 1.3s, opacity .9s ease 1.3s;
+}
+body.opened .sleeve {
+  transform: translateX(14%);
+  opacity: 0;
+  transition-delay: 0s;
+}
+
+/* Curved front flap, hinged on the left edge */
+.flap {
   position: absolute;
   inset: 0;
   transform-origin: left center;
   transform-style: preserve-3d;
-  transition: transform 1.8s cubic-bezier(.6, .05, .25, 1), opacity .6s ease 1.6s;
-  z-index: 2;
+  transition: transform 1.7s cubic-bezier(.6, .05, .25, 1), opacity .5s ease;
 }
-body.opened .cover {
-  transform: rotateY(-165deg);
+body.opened .flap {
+  transform: rotateY(-170deg);
   opacity: 0;
-  pointer-events: none;
+  transition: transform 1.7s cubic-bezier(.6, .05, .25, 1) .45s, opacity .6s ease 1.9s;
 }
-/* Wide screens: slide over and keep the cover open like a book */
+/* Wide screens: slide over and keep the flap open beside the invitation */
 @media (min-width: 1100px) {
-  body.opened .card { transform: translateX(48%); }
-  body.opened .cover { opacity: 1; }
+  body.opened .card { transform: translateX(29%); }
+  body.opened .flap { transform: rotateY(-178deg); opacity: 1; }
 }
 
 .face {
@@ -98,23 +120,25 @@ body.opened .cover {
   inset: 0;
   backface-visibility: hidden;
   -webkit-backface-visibility: hidden;
-  border-radius: 6px;
 }
-.front { box-shadow: 0 25px 60px rgba(0, 0, 0, .55); }
+.front { filter: drop-shadow(5px 0 6px rgba(0, 0, 0, .35)); }
+.front img {
+  clip-path: polygon(0% 0%, 46.2% 0%, 48.9% 5.6%, 51.4% 11.9%, 53.3% 18.3%, 55.3% 24.6%, 56.4% 31%, 57.2% 37.3%, 57.7% 43.7%, 57.9% 50%, 57.7% 56.3%, 57.2% 62.7%, 56.2% 69%, 54.8% 75.4%, 53.3% 81.7%, 51.4% 88.1%, 48.9% 94.4%, 46.2% 100%, 0% 100%);
+}
 .back {
   transform: rotateY(180deg);
+  clip-path: polygon(100% 0%, 53.8% 0%, 51.1% 5.6%, 48.6% 11.9%, 46.7% 18.3%, 44.7% 24.6%, 43.6% 31%, 42.8% 37.3%, 42.3% 43.7%, 42.1% 50%, 42.3% 56.3%, 42.8% 62.7%, 43.8% 69%, 45.2% 75.4%, 46.7% 81.7%, 48.6% 88.1%, 51.1% 94.4%, 53.8% 100%, 100% 100%);
   background:
-    linear-gradient(90deg, rgba(0,0,0,.25), transparent 30%),
-    radial-gradient(circle at 60% 40%, #a3164a, var(--wine) 70%);
-  box-shadow: inset 0 0 0 10px rgba(0,0,0,.08), inset 0 0 0 12px var(--gold-soft);
+    linear-gradient(270deg, rgba(0,0,0,.3), transparent 25%),
+    radial-gradient(circle at 70% 45%, #b01c50, var(--wine) 75%);
 }
 
 /* ---------- wax seal hotspot ---------- */
 .seal {
   position: absolute;
-  left: 47.6%;
-  top: 55%;
-  width: 22%;
+  left: 48.4%;
+  top: 55.1%;
+  width: 20%;
   aspect-ratio: 1;
   transform: translate(-50%, -50%);
   border: 0;
@@ -301,6 +325,6 @@ h2 {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .cover, .card { transition-duration: .01s; }
+  .sleeve, .flap, .card { transition-duration: .01s !important; transition-delay: 0s !important; }
   .seal::before, .seal::after, .hint { animation: none; }
 }

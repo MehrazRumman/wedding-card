@@ -24,7 +24,7 @@
       setTimeout(function () {
         details.scrollIntoView({ behavior: reduceMotion ? "auto" : "smooth", block: "start" });
       }, 1400);
-    }, reduceMotion ? 0 : 1200);
+    }, reduceMotion ? 0 : 1900);
   }
 
   function close() {
